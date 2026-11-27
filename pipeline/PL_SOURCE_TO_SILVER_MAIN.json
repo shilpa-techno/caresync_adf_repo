@@ -27,13 +27,57 @@
 					"dataset": {
 						"referenceName": "DS_metaAzureSql",
 						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Ingest all tables",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "read_source_table_list",
+						"dependencyConditions": [
+							"Succeeded"
+						]
 					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('read_source_table_list').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "test",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "test",
+								"value": {
+									"value": "@item().table_id",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],
 		"parameters": {
 			"source_system": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"test": {
+				"type": "String"
 			}
 		},
 		"annotations": []
