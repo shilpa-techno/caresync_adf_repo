@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "select table_id from ctrl.table_config WHERE is_active=1 and source_system='@{pipeline().parameters.table_id}'",
+							"value": "select * from ctrl.table_config WHERE table_id=@{pipeline().parameters.table_id}",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -27,7 +27,8 @@
 					"dataset": {
 						"referenceName": "DS_metaAzureSql",
 						"type": "DatasetReference"
-					}
+					},
+					"firstRowOnly": true
 				}
 			}
 		],
